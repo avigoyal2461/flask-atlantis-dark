@@ -1,4 +1,13 @@
 "use strict";
+var bot_data; //declare bot data
+$(document).ready(function () {
+	$.get('http://40.114.108.25:6050/processes', function (data) {
+		bot_data = data; //assign global bot data to data function
+		$.each(data, function (index, process) {
+			console.log(process)
+		});
+	});
+});
 // Cicle Chart
 Circles.create({
 	id:           'task-complete',
