@@ -14,11 +14,13 @@ var uncompleted_month_data;
 var total_running;
 var total_not_running;
 
+const button = document.querySelector('.btn-refresh-card');
+button.addEventListener('click', get_process_table);
 // Cicle Chart
 function get_process_table(){
 	$.get('http://40.114.108.25:6050/processes', function (data) {
 		bot_data = data;
-		console.log(bot_data)
+		// console.log(bot_data)
 		process_table(bot_data);
 		//callback(bot_data)
 	});
@@ -29,8 +31,8 @@ $(document).ready(function () {
 		// $.get('http://172.19.36.176:6050/processes', function (data) {
 		// bot_data = data; //assign global bot data to data function
 		bot_data = data;
-		console.log(bot_data);
-		process_table(bot_data)
+		// console.log(bot_data);
+		process_table(bot_data);
 		$.each(bot_data, function (index, process) {
 			if (process.Running.includes("Yes")) {
 				total_running += 1;
@@ -64,9 +66,9 @@ $(document).ready(function () {
 			total_month_data = data.map(item => item.month_data);
 			completed_month_data = data.map(item => item.month_data_completed);
 			uncompleted_month_data = data.map(item => item.month_data_uncompleted);
-			console.log(total_month_data);
-			console.log(completed_month_data);
-			console.log(uncompleted_month_data);
+			// console.log(total_month_data);
+			// console.log(completed_month_data);
+			// console.log(uncompleted_month_data);
 			statisticsChart.data.datasets[0].data = uncompleted_month_data;
 			statisticsChart.data.datasets[1].data = completed_month_data;
 			statisticsChart.data.datasets[2].data = total_month_data;
@@ -74,14 +76,14 @@ $(document).ready(function () {
 			// Update the legend and redraw the chart
 			myLegendContainer.innerHTML = statisticsChart.generateLegend();
 			statisticsChart.update();
-			console.log("Chart updated successfully.");
+			// console.log("Chart updated successfully.");
 		}
 	});
 	$.ajax({
 		url: 'http://172.19.36.176:6050/processes',
 		method: 'PUT',
 		success: function (data) {
-			console.log(data)
+			// console.log(data)
 			weeklyCompletionChart(data)
 		}
 	});
