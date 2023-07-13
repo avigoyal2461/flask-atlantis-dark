@@ -15,21 +15,31 @@ var total_running;
 var total_not_running;
 
 // Cicle Chart
+function get_process_table(){
+	$.get('http://40.114.108.25:6050/processes', function (data) {
+		bot_data = data;
+		console.log(bot_data)
+		process_table(bot_data);
+		//callback(bot_data)
+	});
+};
+
 $(document).ready(function () {
 	$.get('http://40.114.108.25:6050//processes', function (data) {
 		// $.get('http://172.19.36.176:6050/processes', function (data) {
-		bot_data = data; //assign global bot data to data function
-		console.log(bot_data)
+		// bot_data = data; //assign global bot data to data function
+		bot_data = data;
+		console.log(bot_data);
 		process_table(bot_data)
-		$.each(data, function (index, process) {
+		$.each(bot_data, function (index, process) {
 			if (process.Running.includes("Yes")) {
 				total_running += 1;
 			} else if (process.Running.includes("Not Running")) {
 				total_not_running += 1;
-			} else if (process.Running.includes("Disabled")) {
-				console.log(process)
-			} else {
+			} else if (process.Running.includes("Not Updating")) {
 				total_not_updating += 1
+			} else {
+				//pass
 			}
 		});
 		// var circleElement = Circles.getById("Not_Updating");
