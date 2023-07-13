@@ -19,6 +19,8 @@ $(document).ready(function () {
 	$.get('http://40.114.108.25:6050//processes', function (data) {
 		// $.get('http://172.19.36.176:6050/processes', function (data) {
 		bot_data = data; //assign global bot data to data function
+		console.log(bot_data)
+		process_table(bot_data)
 		$.each(data, function (index, process) {
 			if (process.Running.includes("Yes")) {
 				total_running += 1;
@@ -65,6 +67,14 @@ $(document).ready(function () {
 			console.log("Chart updated successfully.");
 		}
 	});
+	$.ajax({
+		url: 'http://172.19.36.176:6050/processes',
+		method: 'PUT',
+		success: function (data) {
+			console.log(data)
+			weeklyCompletionChart(data)
+		}
+	});
 	// $.patch('http://172.19.36.176:6050/processes', function (data) {
 	// 	total_month_data = data.map(item => item.month_data);
 	// 	completed_month_data = data.map(item => item.month_data_completed);
@@ -105,7 +115,7 @@ var circleRunning = Circles.create({
 	value: 80,
 	maxValue: 100,
 	width: 5,
-	text: function (value) { return value + '%'; },
+	text: 0,//function (value) { return value + '%'; },
 	colors: ['#36a3f7', '#fff'],
 	duration: 400,
 	wrpClass: 'circles-wrp',
@@ -119,7 +129,7 @@ var circleNotRunning = Circles.create({
 	value: 80,
 	maxValue: 100,
 	width: 5,
-	text: function (value) { return value + '%'; },
+	text: 0,//function (value) { return value + '%'; },
 	colors: ['#36a3f7', '#fff'],
 	duration: 400,
 	wrpClass: 'circles-wrp',
@@ -162,6 +172,49 @@ $.notify({
 // 		return false;
 // 	}
 // });
+
+function process_table(data) {
+	$.each(data, function (index, process) {
+		var row = $('<tr>');
+		row.append($('<td>').text(process.Process_Name));
+		row.append($('<td>').text(process.Last_Updated_Timestamp));
+
+		var runningCell = $('<td>');
+		if (process.Running.includes("Yes")) {
+			runningCell.text(process.Running).addClass('Running');
+		} else if (process.Running.includes("Not Running")) {
+			runningCell.text(process.Running).addClass('not-running');
+		} else if (process.Running.includes("Disabled")) {
+			runningCell.text(process.Running).addClass('disabled');
+		} else {
+			runningCell.text(process.Running).addClass('not-updating');
+		}
+		row.append(runningCell);
+
+		// row.append($('<td>').text(process.completed_today).addClass("col-md-6"));
+		row.append($('<td>').text(process.completed_today));
+		row.append($('<td>').text(process.last_hour));
+		row.append($('<td>').text(process.Unfinished_length));
+		row.append($('<td>').text(process.Process_Description));
+		var collapsibleRow = $('<tr class="collapsible collapsed">');
+		var collapsibleRowTwo = $('<tr class="collapsible collapsed">');
+		var collapsibleCell = $('<td colspan="5">');
+		var collapsibleCellTwo = $('<td colspan="5">');
+		collapsibleCell.text('This is the list of items completed today by ' + process.Process_Name + ' : ' + process.full_opportunity_info);
+		collapsibleCellTwo.text('This is the list of items started but not finished today: ' + process.Unfinished);
+		collapsibleRow.append(collapsibleCell);
+		collapsibleRowTwo.append(collapsibleCellTwo);
+		row.click(function () {
+			collapsibleRow.toggle();
+			collapsibleRowTwo.toggle();
+			collapsibleRow.insertAfter(row);
+			collapsibleRowTwo.insertAfter(row);
+		});
+	$('#processes tbody').append(row);
+	$('#processes tbody').append(collapsibleRow);
+	$('#processes tbody').append(collapsibleRowTwo);
+	});
+}
 
 //Chart
 
@@ -262,7 +315,50 @@ var statisticsChart = new Chart(ctx, {
 		}  
 	}
 });
-
+function weeklyCompletionChart(weeklyData) {
+	weeklyData = weeklyData[0];
+	var weeklyCompletions = document.getElementById('weeklyCompletions').getContext('2d');
+	var total_elemnt = document.getElementById('totalWeeklyCompletion');
+	var total = weeklyData.Monday + weeklyData.Tuesday + weeklyData.Wednesday + weeklyData.Thursday + weeklyData.Friday + weeklyData.Saturday + weeklyData.Sunday;
+	total_elemnt.innerHTML = total;
+	var weeklyCompletions = new Chart(weeklyCompletions, {
+		type: 'bar',
+		data: {
+			labels: ["S", "M", "T", "W", "T", "F", "S"],
+			datasets: [{
+				label: "Total Income",
+				backgroundColor: '#ff9e27',
+				borderColor: 'rgb(23, 125, 255)',
+				// data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+				data: [weeklyData.Sunday, weeklyData.Monday, weeklyData.Tuesday, weeklyData.Wednesday, weeklyData.Thursday, weeklyData.Friday, weeklyData.Saturday]
+			}],
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			legend: {
+				display: false,
+			},
+			scales: {
+				yAxes: [{
+					ticks: {
+						display: false //this will remove only the label
+					},
+					gridLines: {
+						drawBorder: false,
+						display: false
+					}
+				}],
+				xAxes: [{
+					gridLines: {
+						drawBorder: false,
+						display: false
+					}
+				}]
+			},
+		}
+	});
+}
 var myLegendContainer = document.getElementById("myChartLegend");
 
 // generate HTML legend

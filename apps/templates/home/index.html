@@ -6,7 +6,69 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-			
+<style>
+	#processes {
+        width: 100%;
+        border-collapse: collapse;
+        border: 2px solid #ddd;
+        table-layout: fixed;
+        width: 100%;
+    }
+    
+    #processes th {
+        padding: 12px;
+        background-color: #4CAF50;
+        color: white;
+        font-weight: bold;
+        text-align: left;
+    }
+    
+    #processes td {
+        padding: 8px;
+        border: 1px solid #ddd;
+        width: 50px;
+        word-wrap: break-word;
+    }
+
+	.not-running {
+        background-color: #800000;
+        color: white;
+        font-weight: bold;
+    }
+    .Running {
+        background-color: #034927;
+        color: white;
+        font-weight: bold;
+    }
+    .not-updating {
+        background-color: #6F761A;
+        color: white;
+        font-weight: bold;
+    }
+    .disabled {
+        background-color: #010011;
+        color: white;
+        font-weight: bold;
+    }
+
+	.collapsible {
+      background-color: #05146F;
+      width: 100%
+    }
+
+    .collapsible td {
+      padding: 10px;
+    }
+
+    .collapsible:hover {
+      background-color: #5F74F7;
+      cursor: pointer;
+    }
+    .collapsible.collapsed {
+      display: none;
+    }
+</style>
+
 	<div class="content">
 		<div class="panel-header bg-primary-gradient">
 			<div class="page-inner py-5">
@@ -49,21 +111,21 @@
 				<div class="col-md-6">
 					<div class="card full-height">
 						<div class="card-body">
-							<div class="card-title">Total income & spend statistics</div>
+							<div class="card-title">Weekly Completions</div>
 							<div class="row py-3">
 								<div class="col-md-4 d-flex flex-column justify-content-around">
 									<div>
-										<h6 class="fw-bold text-uppercase text-success op-8">Total Income</h6>
-										<h3 class="fw-bold">$9.782</h3>
+										<h6 class="fw-bold text-uppercase text-success op-8">Total Completions</h6>
+										<h3 class="fw-bold", id="totalWeeklyCompletion"></h3>
 									</div>
-									<div>
-										<h6 class="fw-bold text-uppercase text-danger op-8">Total Spend</h6>
+									<!-- <div>
+										<h6 class="fw-bold text-uppercase text-danger op-8">Total Uncompleted</h6>
 										<h3 class="fw-bold">$1,248</h3>
-									</div>
+									</div> -->
 								</div>
 								<div class="col-md-8">
 									<div id="chart-container">
-										<canvas id="totalIncomeChart"></canvas>
+										<canvas id="weeklyCompletions"></canvas>
 									</div>
 								</div>
 							</div>
@@ -145,10 +207,20 @@
 						</div>
 						<div class="card-body">
 							<div class="row">
-								<div class="col-md-6">
+								<div class=".w-auto">
+								<!-- <div class="col-md-6"> -->
 									<div class="table-responsive table-hover table-sales">
-										<table class="table">
-											<tbody>
+										<table class="table", id="processes">
+											<tr>
+												<th>Process Name</th>
+												<th>Last Updated TimeStamp</th>
+												<th>Running</th>
+												<th>Completed Today</th>
+												<th>Completed Last Hour</th>
+												<th>Started But Not Finished Today</th>
+												<th>Process Description</th>
+											</tr>
+											<!-- <tbody>
 												<tr>
 													<td>
 														<div class="flag">
@@ -233,15 +305,15 @@
 														11.63%
 													</td>
 												</tr>
-											</tbody>
+											</tbody> -->
 										</table>
 									</div>
 								</div>
-								<div class="col-md-6">
+								<!-- <div class="col-md-6">
 									<div class="mapcontainer">
 										<div id="map-example" class="vmap"></div>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>
@@ -534,89 +606,89 @@
 	<script src="/static/assets/js/demo.js"></script>
 
 	<script>
-		Circles.create({
-			id:'circles-1',
-			radius:45,
-			value:60,
-			maxValue:100,
-			width:7,
-			text: 5,
-			colors:['#f1f1f1', '#FF9E27'],
-			duration:400,
-			wrpClass:'circles-wrp',
-			textClass:'circles-text',
-			styleWrapper:true,
-			styleText:true
-		})
+		// Circles.create({
+		// 	id:'circles-1',
+		// 	radius:45,
+		// 	value:60,
+		// 	maxValue:100,
+		// 	width:7,
+		// 	text: 5,
+		// 	colors:['#f1f1f1', '#FF9E27'],
+		// 	duration:400,
+		// 	wrpClass:'circles-wrp',
+		// 	textClass:'circles-text',
+		// 	styleWrapper:true,
+		// 	styleText:true
+		// })
 
-		Circles.create({
-			id:'circles-2',
-			radius:45,
-			value:70,
-			maxValue:100,
-			width:7,
-			text: 36,
-			colors:['#f1f1f1', '#2BB930'],
-			duration:400,
-			wrpClass:'circles-wrp',
-			textClass:'circles-text',
-			styleWrapper:true,
-			styleText:true
-		})
+		// Circles.create({
+		// 	id:'circles-2',
+		// 	radius:45,
+		// 	value:70,
+		// 	maxValue:100,
+		// 	width:7,
+		// 	text: 36,
+		// 	colors:['#f1f1f1', '#2BB930'],
+		// 	duration:400,
+		// 	wrpClass:'circles-wrp',
+		// 	textClass:'circles-text',
+		// 	styleWrapper:true,
+		// 	styleText:true
+		// })
 
-		Circles.create({
-			id:'circles-3',
-			radius:45,
-			value:40,
-			maxValue:100,
-			width:7,
-			text: 12,
-			colors:['#f1f1f1', '#F25961'],
-			duration:400,
-			wrpClass:'circles-wrp',
-			textClass:'circles-text',
-			styleWrapper:true,
-			styleText:true
-		})
+		// Circles.create({
+		// 	id:'circles-3',
+		// 	radius:45,
+		// 	value:40,
+		// 	maxValue:100,
+		// 	width:7,
+		// 	text: 12,
+		// 	colors:['#f1f1f1', '#F25961'],
+		// 	duration:400,
+		// 	wrpClass:'circles-wrp',
+		// 	textClass:'circles-text',
+		// 	styleWrapper:true,
+		// 	styleText:true
+		// })
 
-		var totalIncomeChart = document.getElementById('totalIncomeChart').getContext('2d');
+		// var totalIncomeChart = document.getElementById('totalIncomeChart').getContext('2d');
 
-		var mytotalIncomeChart = new Chart(totalIncomeChart, {
-			type: 'bar',
-			data: {
-				labels: ["S", "M", "T", "W", "T", "F", "S", "S", "M", "T"],
-				datasets : [{
-					label: "Total Income",
-					backgroundColor: '#ff9e27',
-					borderColor: 'rgb(23, 125, 255)',
-					data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
-				}],
-			},
-			options: {
-				responsive: true,
-				maintainAspectRatio: false,
-				legend: {
-					display: false,
-				},
-				scales: {
-					yAxes: [{
-						ticks: {
-							display: false //this will remove only the label
-						},
-						gridLines : {
-							drawBorder: false,
-							display : false
-						}
-					}],
-					xAxes : [ {
-						gridLines : {
-							drawBorder: false,
-							display : false
-						}
-					}]
-				},
-			}
-		});
+		// var mytotalIncomeChart = new Chart(totalIncomeChart, {
+		// 	type: 'bar',
+		// 	data: {
+		// 		labels: ["S", "M", "T", "W", "T", "F", "S", "S", "M", "T"],
+		// 		datasets : [{
+		// 			label: "Total Income",
+		// 			backgroundColor: '#ff9e27',
+		// 			borderColor: 'rgb(23, 125, 255)',
+		// 			data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+		// 		}],
+		// 	},
+		// 	options: {
+		// 		responsive: true,
+		// 		maintainAspectRatio: false,
+		// 		legend: {
+		// 			display: false,
+		// 		},
+		// 		scales: {
+		// 			yAxes: [{
+		// 				ticks: {
+		// 					display: false //this will remove only the label
+		// 				},
+		// 				gridLines : {
+		// 					drawBorder: false,
+		// 					display : false
+		// 				}
+		// 			}],
+		// 			xAxes : [ {
+		// 				gridLines : {
+		// 					drawBorder: false,
+		// 					display : false
+		// 				}
+		// 			}]
+		// 		},
+		// 	}
+		// });
 
 		$('#lineChart').sparkline([105,103,123,100,95,105,115], {
 			type: 'line',
