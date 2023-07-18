@@ -14,14 +14,26 @@ var uncompleted_month_data;
 var total_running;
 var total_not_running;
 
-const button = document.querySelector('.btn-refresh-card');
 const rpa_url = 'http://40.114.108.25:6050/processes'
-
-button.addEventListener('click', get_process_table);
+/*
+document.addEventListener('DOMContentLoaded', function () {
+	var hide_button = document.querySelector('.btn.btn-icon.btn-link.btn-primary.btn-xs');
+	hide_button.addEventListener('click')
+});
+*/
+document.addEventListener('DOMContentLoaded', function () {
+	var button = document.querySelector('.btn-refresh-card');
+	button.addEventListener('click', get_process_table);
+});
 // Cicle Chart
 function get_process_table(){
 	$.get(rpa_url, function (data) {
 		bot_data = data;
+		var tableBody = document.querySelector('#processes tbody');
+		tableBody.innerHTML = '';
+		//while (tableBody.firstChild) {
+			//tableBody.removeChild(tableBody.firstChild);
+		//}
 		// console.log(bot_data)
 		process_table(bot_data);
 		//callback(bot_data)
@@ -30,7 +42,6 @@ function get_process_table(){
 
 $(document).ready(function () {
 	$.get(rpa_url, function (data) {
-		// $.get('http://172.19.36.176:6050/processes', function (data) {
 		// bot_data = data; //assign global bot data to data function
 		bot_data = data;
 		// console.log(bot_data);
@@ -89,7 +100,6 @@ $(document).ready(function () {
 			weeklyCompletionChart(data)
 		}
 	});
-	// $.patch('http://172.19.36.176:6050/processes', function (data) {
 	// 	total_month_data = data.map(item => item.month_data);
 	// 	completed_month_data = data.map(item => item.month_data_completed);
 	// 	uncompleted_month_data = data.map(item => item.month_data_uncompleted);
@@ -109,11 +119,11 @@ $(document).ready(function () {
 var circleNotUpdating = Circles.create({
 	id: 'Not_Updating',
 	radius: 50,
-	value: 80,
-	maxValue: 100,
+	value: 15,
+	maxValue: 35,
 	width: 5,
 	text: 0,
-	colors: ['#36a3f7', '#fff'],
+	colors: ['#36a3f7', '#00FF00'],
 	duration: 400,
 	wrpClass: 'circles-wrp',
 	textClass: 'circles-text',
@@ -126,11 +136,11 @@ var circleNotUpdating = Circles.create({
 var circleRunning = Circles.create({
 	id: 'Running',
 	radius: 50,
-	value: 80,
-	maxValue: 100,
+	value: 17,
+	maxValue: 35,
 	width: 5,
 	text: 0,//function (value) { return value + '%'; },
-	colors: ['#36a3f7', '#fff'],
+	colors: ['#36a3f7', '#00FF00'],
 	duration: 400,
 	wrpClass: 'circles-wrp',
 	textClass: 'circles-text',
@@ -140,11 +150,11 @@ var circleRunning = Circles.create({
 var circleNotRunning = Circles.create({
 	id: 'Not_Running',
 	radius: 50,
-	value: 80,
-	maxValue: 100,
+	value: 2,
+	maxValue: 35,
 	width: 5,
 	text: 0,//function (value) { return value + '%'; },
-	colors: ['#36a3f7', '#fff'],
+	colors: ['#36a3f7', '#00FF00'],
 	duration: 400,
 	wrpClass: 'circles-wrp',
 	textClass: 'circles-text',
@@ -190,6 +200,7 @@ $.notify({
 function process_table(data) {
 	$.each(data, function (index, process) {
 		var row = $('<tr>');
+		row.append($('<td>').text(process.Process_Id))
 		row.append($('<td>').text(process.Process_Name));
 		row.append($('<td>').text(process.Last_Updated_Timestamp));
 
