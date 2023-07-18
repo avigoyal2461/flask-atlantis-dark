@@ -351,7 +351,7 @@ function weeklyCompletionChart(weeklyData) {
 		data: {
 			labels: ["S", "M", "T", "W", "T", "F", "S"],
 			datasets: [{
-				label: "Total Income",
+				label: "Total Completions",
 				backgroundColor: '#ff9e27',
 				borderColor: 'rgb(23, 125, 255)',
 				// data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
