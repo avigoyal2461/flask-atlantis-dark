@@ -15,10 +15,12 @@ var total_running;
 var total_not_running;
 
 const button = document.querySelector('.btn-refresh-card');
+const rpa_url = 'http://40.114.108.25:6050/processes'
+
 button.addEventListener('click', get_process_table);
 // Cicle Chart
 function get_process_table(){
-	$.get('http://40.114.108.25:6050/processes', function (data) {
+	$.get(rpa_url, function (data) {
 		bot_data = data;
 		// console.log(bot_data)
 		process_table(bot_data);
@@ -27,7 +29,7 @@ function get_process_table(){
 };
 
 $(document).ready(function () {
-	$.get('http://40.114.108.25:6050//processes', function (data) {
+	$.get(rpa_url, function (data) {
 		// $.get('http://172.19.36.176:6050/processes', function (data) {
 		// bot_data = data; //assign global bot data to data function
 		bot_data = data;
@@ -60,7 +62,7 @@ $(document).ready(function () {
 		// circleNotUpdating.text = total_not_updating
 	});
 	$.ajax({
-		url:'http://172.19.36.176:6050/processes',
+		url: rpa_url,
 		method: 'PATCH',
 		success: function(data){
 			total_month_data = data.map(item => item.month_data);
@@ -80,7 +82,7 @@ $(document).ready(function () {
 		}
 	});
 	$.ajax({
-		url: 'http://172.19.36.176:6050/processes',
+		url: rpa_url,
 		method: 'PUT',
 		success: function (data) {
 			// console.log(data)
