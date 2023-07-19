@@ -31,6 +31,16 @@ function get_process_table(){
 		bot_data = data;
 		var tableBody = document.querySelector('#processes tbody');
 		tableBody.innerHTML = '';
+		var row = $('<tr>');
+		row.append($('<th>').text('Process ID'));
+		row.append($('<th>').text('Process Name'));
+		row.append($('<th>').text('Last Updated TimeStamp'));
+		row.append($('<th>').text('Running'));
+		row.append($('<th>').text('Completed Today'));
+		row.append($('<th>').text('Completed Last Hour'));
+		row.append($('<th>').text('Started But Not Finished Today'));
+		row.append($('<th>').text('Process Description'));
+		$('#processes tbody').append(row);
 		//while (tableBody.firstChild) {
 			//tableBody.removeChild(tableBody.firstChild);
 		//}
@@ -66,7 +76,7 @@ $(document).ready(function () {
 		circleTextElementNotUpdating.innerHTML = total_not_updating
 		circleTextElementNotRunning.innerHTML = total_not_running
 		circleTextElementRunning.innerHTML = total_running
-		circleTextElementNotUpdating.maxValue = 20;
+		circleTextElementNotUpdating.maxValue = total_not_running + total_not_updating + total_running;
 		// circleNotUpdating.update()
 		// circleRunning.update()
 		// circleNotRunning.update()
@@ -200,7 +210,7 @@ $.notify({
 function process_table(data) {
 	$.each(data, function (index, process) {
 		var row = $('<tr>');
-		row.append($('<td>').text(process.Process_Id))
+		row.append($('<td>').text(process.Process_Id));
 		row.append($('<td>').text(process.Process_Name));
 		row.append($('<td>').text(process.Last_Updated_Timestamp));
 
