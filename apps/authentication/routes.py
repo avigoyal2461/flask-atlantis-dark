@@ -113,14 +113,14 @@ def logout():
 def index():
     if not session.get("user"):
         return redirect(url_for("accounts/login.html"))
-    return render_template('index.html', user=session["user"], version=msal.__version__)
+    return render_template('home_blueprint.index', user=session["user"], version=msal.__version__)
 
 @blueprint.route("/login")
 def login():
     # Technically we could use empty list [] as scopes to do just sign in,
     # here we choose to also collect end user consent upfront
     session["flow"] = _build_auth_code_flow(scopes=app_config.SCOPE)
-    return render_template("login.html", auth_url=session["flow"]["auth_uri"], version=msal.__version__)
+    return render_template("accounts/login.html", auth_url=session["flow"]["auth_uri"], version=msal.__version__)
 
 @blueprint.route(app_config.REDIRECT_PATH)  # Its absolute URL must match your app's redirect_uri set in AAD
 def authorized():
@@ -134,14 +134,14 @@ def authorized():
         _save_cache(cache)
     except ValueError:  # Usually caused by CSRF
         pass  # Simply ignore them
-    return redirect(url_for("index"))
+    return redirect(url_for("home_blueprint.index"))
 
 @blueprint.route("/logout")
 def logout():
     session.clear()  # Wipe out user and its token cache from session
     return redirect(  # Also logout from your tenant's web session
         app_config.AUTHORITY + "/oauth2/v2.0/logout" +
-        "?post_logout_redirect_uri=" + url_for("index", _external=True))
+        "?post_logout_redirect_uri=" + url_for("authentication_blueprint.login", _external=True))
 
 @blueprint.route("/graphcall")
 def graphcall():

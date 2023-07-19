@@ -28,7 +28,6 @@ except KeyError:
 
 app = create_app(app_config)
 Session(app)
-current_user = None
 #Migrate(app, db)
 
 if not DEBUG:
@@ -41,4 +40,6 @@ if DEBUG:
     app.logger.info('ASSETS_ROOT      = ' + app_config.ASSETS_ROOT )
 
 if __name__ == "__main__":
+    app.secret_key = 'RPASuperSecretKEY'
+
     app.run("0.0.0.0", 6060)

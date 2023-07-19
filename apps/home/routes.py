@@ -8,7 +8,6 @@ from flask import render_template, request
 #from flask_login import login_required
 from jinja2 import TemplateNotFound
 
-current_user = None
 @blueprint.route('/index')
 #@login_required
 def index():

@@ -38,24 +38,24 @@
 <body data-background-color="dark">
 	<div class="wrapper">
 
-        {% include 'includes/navigation.html' %}
+		{% include 'includes/navigation.html' %}
 
-        {% include 'includes/sidebar.html' %}
+		{% include 'includes/sidebar.html' %}
 
 		<div class="main-panel">
-			
+
 			{% block content %}{% endblock content %}
 
 			{% include 'includes/footer.html' %}
 
 		</div>
-        
-		{% if current_user.is_authenticated %}
 
-			<!-- Custom template | don't include it in your project! -->
-			{% include 'includes/configuration-plugin.html' %}
+		{% if session["user"] %}
 
-		{% endif %}		
+		<!-- Custom template | don't include it in your project! -->
+		{% include 'includes/configuration-plugin.html' %}
+
+		{% endif %}
 
 	</div>
 

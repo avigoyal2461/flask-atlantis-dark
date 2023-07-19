@@ -3,7 +3,7 @@
 			<div class="sidebar-wrapper scrollbar scrollbar-inner">
 				<div class="sidebar-content">
 
-				{% if current_user.is_authenticated %}	
+					{% if session["user"] %}
 					<div class="user">
 						<div class="avatar-sm float-left mr-2">
 							<img src="/static/assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle">
@@ -11,9 +11,9 @@
 						<div class="info">
 							<a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
 								<span>
-									{{ current_user.username }}
+									{{ session["user"] }}
 									<span class="user-level">
-										{{ current_user.email }}
+										{{ session["user"] }}
 									</span>
 									<span class="caret"></span>
 								</span>
@@ -289,22 +289,24 @@
 							</div>
 						</li>
 						<li class="mx-4 mt-2">
-                            <a target="_blank"
-                               href="https://appseed.us/admin-dashboards/flask-dashboard-atlantis-dark-pro" 
-                               class="btn btn-danger btn-block">
-                                <span class="btn-label mr-2"> <i class="fa fa-rocket"></i> </span>PRO Version</a> 
+							<a target="_blank"
+							   href="https://appseed.us/admin-dashboards/flask-dashboard-atlantis-dark-pro"
+							   class="btn btn-danger btn-block">
+								<span class="btn-label mr-2"> <i class="fa fa-rocket"></i> </span>PRO Version
+							</a>
 						</li>
 					</ul>
-				{% else %}
+					{% else %}
 					<ul class="nav nav-primary">
 						<li class="mx-4 mt-2">
-                            <a target="_blank"
-                               href="https://appseed.us/admin-dashboards/flask-dashboard-atlantis-dark-pro" 
-                               class="btn btn-danger btn-block">
-                                <span class="btn-label mr-2"> <i class="fa fa-rocket"></i> </span>PRO Version</a> 
+							<a target="_blank"
+							   href="https://appseed.us/admin-dashboards/flask-dashboard-atlantis-dark-pro"
+							   class="btn btn-danger btn-block">
+								<span class="btn-label mr-2"> <i class="fa fa-rocket"></i> </span>PRO Version
+							</a>
 						</li>
 					</ul>
-				{% endif %}	
+					{% endif %}
 				</div>
 			</div>
 		</div>
