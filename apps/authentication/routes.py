@@ -112,7 +112,7 @@ def logout():
 @blueprint.route("/")
 def index():
     if not session.get("user"):
-        return redirect(url_for("accounts/login.html"))
+        return redirect(url_for("accounts/loginOLd.html"))
     return render_template('home_blueprint.index', user=session["user"], version=msal.__version__)
 
 @blueprint.route("/login")
@@ -120,7 +120,7 @@ def login():
     # Technically we could use empty list [] as scopes to do just sign in,
     # here we choose to also collect end user consent upfront
     session["flow"] = _build_auth_code_flow(scopes=app_config.SCOPE)
-    return render_template("accounts/login.html", auth_url=session["flow"]["auth_uri"], version=msal.__version__)
+    return render_template("accounts/loginOLd.html", auth_url=session["flow"]["auth_uri"], version=msal.__version__)
 
 @blueprint.route(app_config.REDIRECT_PATH)  # Its absolute URL must match your app's redirect_uri set in AAD
 def authorized():
