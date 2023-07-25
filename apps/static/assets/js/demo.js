@@ -126,6 +126,9 @@ $(document).ready(function () {
 	// 	console.log("Chart updated successfully.");
 	// });
 });
+function create_circles() {
+	console.log("Circle creation")
+}
 var circleNotUpdating = Circles.create({
 	id: 'Not_Updating',
 	radius: 50,
@@ -353,19 +356,24 @@ var statisticsChart = new Chart(ctx, {
 function weeklyCompletionChart(weeklyData) {
 	weeklyData = weeklyData[0];
 	var weeklyCompletions = document.getElementById('weeklyCompletions').getContext('2d');
-	var total_elemnt = document.getElementById('totalWeeklyCompletion');
+	var total_element = document.getElementById('totalWeeklyCompletion');
+	var total_last_week = document.getElementById('totalLastWeekCompletions');
+
 	var total = weeklyData.Monday + weeklyData.Tuesday + weeklyData.Wednesday + weeklyData.Thursday + weeklyData.Friday + weeklyData.Saturday + weeklyData.Sunday;
-	total_elemnt.innerHTML = total;
+	var totalLastWeek = weeklyData.LastWeek_Monday + weeklyData.LastWeek_Tuesday + weeklyData.LastWeek_Wednesday + weeklyData.LastWeek_Thursday + weeklyData.LastWeek_Friday + weeklyData.LastWeek_Saturday + weeklyData.LastWeek_Sunday;
+
+	total_element.innerHTML = total;
+	total_last_week.innerHTML = totalLastWeek;
+
 	var weeklyCompletions = new Chart(weeklyCompletions, {
 		type: 'bar',
 		data: {
-			labels: ["S", "M", "T", "W", "T", "F", "S"],
+			labels: ["S", "M", "T", "W", "T", "F", "S", "S", "M", "T", "W", "T", "F", "S"],
 			datasets: [{
 				label: "Total Completions",
 				backgroundColor: '#ff9e27',
 				borderColor: 'rgb(23, 125, 255)',
-				// data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
-				data: [weeklyData.Sunday, weeklyData.Monday, weeklyData.Tuesday, weeklyData.Wednesday, weeklyData.Thursday, weeklyData.Friday, weeklyData.Saturday]
+				data: [weeklyData.LastWeek_Sunday, weeklyData.LastWeek_Monday, weeklyData.LastWeek_Tuesday, weeklyData.LastWeek_Wednesday, weeklyData.LastWeek_Thursday, weeklyData.LastWeek_Friday, weeklyData.LastWeek_Saturday, weeklyData.Sunday, weeklyData.Monday, weeklyData.Tuesday, weeklyData.Wednesday, weeklyData.Thursday, weeklyData.Friday, weeklyData.Saturday]
 			}],
 		},
 		options: {
@@ -417,8 +425,6 @@ var mydailyCompletions = new Chart(dailyCompletions, {
 		"Friday",
 		"Saturday",
 		"Sunday"],
-		//"August",
-		//"September"],
 
 		datasets:[ {
 			label: "Sales Analytics", 
