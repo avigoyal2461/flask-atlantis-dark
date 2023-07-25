@@ -10,6 +10,12 @@ __pycache__/
 *.db
 *.sqlite3
 *.log
+*.sqlite
+
+# flask session 
+/*_session/
+*vsidx
+flask_session/
 
 # venv
 env
@@ -31,3 +37,4 @@ apps/static/assets/node_modules
 apps/static/assets/yarn.lock
 apps/static/assets/.temp
 
+flask_session/2029240f6d1128be89ddc32729463129
