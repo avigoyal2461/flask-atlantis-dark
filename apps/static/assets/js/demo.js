@@ -70,13 +70,15 @@ $(document).ready(function () {
 		// var circleElement = Circles.getById("Not_Updating");
 		// circleElement.text = total_not_updating;
 		// circleNotUpdating.update(total_not_updating)
-		var circleTextElementNotUpdating = document.querySelector('#Not_Updating .circles-text');
-		var circleTextElementRunning = document.querySelector('#Running .circles-text');
-		var circleTextElementNotRunning = document.querySelector('#Not_Running .circles-text');
-		circleTextElementNotUpdating.innerHTML = total_not_updating
-		circleTextElementNotRunning.innerHTML = total_not_running
-		circleTextElementRunning.innerHTML = total_running
-		circleTextElementNotUpdating.maxValue = total_not_running + total_not_updating + total_running;
+		create_circles(total_not_updating, total_running, total_not_running, total_not_running + total_not_updating + total_running)
+
+		//var circleTextElementNotUpdating = document.querySelector('#Not_Updating .circles-text');
+		//var circleTextElementRunning = document.querySelector('#Running .circles-text');
+		//var circleTextElementNotRunning = document.querySelector('#Not_Running .circles-text');
+		//circleTextElementNotUpdating.innerHTML = total_not_updating
+		//circleTextElementNotRunning.innerHTML = total_not_running
+		//circleTextElementRunning.innerHTML = total_running
+		//circleTextElementNotUpdating.maxValue = total_not_running + total_not_updating + total_running;
 		// circleNotUpdating.update()
 		// circleRunning.update()
 		// circleNotRunning.update()
@@ -126,54 +128,55 @@ $(document).ready(function () {
 	// 	console.log("Chart updated successfully.");
 	// });
 });
-function create_circles() {
-	console.log("Circle creation")
+function create_circles(not_updating_text, running_text, not_running_text, max) {
+	console.log(max)
+
+	var circleNotUpdating = Circles.create({
+		id: 'Not_Updating',
+		radius: 50,
+		value: not_updating_text,
+		maxValue: max,
+		width: 5,
+		text: not_updating_text,
+		colors: ['#36a3f7', '#00FF00'],
+		duration: 400,
+		wrpClass: 'circles-wrp',
+		textClass: 'circles-text',
+		styleWrapper: true,
+		styleText: true,
+		// onComplete: function (circle) {
+		// 	circleNotUpdating = circle
+		// }
+	})
+	var circleRunning = Circles.create({
+		id: 'Running',
+		radius: 50,
+		value: running_text,
+		maxValue: max,
+		width: 5,
+		text: running_text,//function (value) { return value + '%'; },
+		colors: ['#36a3f7', '#00FF00'],
+		duration: 400,
+		wrpClass: 'circles-wrp',
+		textClass: 'circles-text',
+		styleWrapper: true,
+		styleText: true
+	})
+	var circleNotRunning = Circles.create({
+		id: 'Not_Running',
+		radius: 50,
+		value: not_running_text,
+		maxValue: max,
+		width: 5,
+		text: not_running_text,//function (value) { return value + '%'; },
+		colors: ['#36a3f7', '#00FF00'],
+		duration: 400,
+		wrpClass: 'circles-wrp',
+		textClass: 'circles-text',
+		styleWrapper: true,
+		styleText: true
+	})
 }
-var circleNotUpdating = Circles.create({
-	id: 'Not_Updating',
-	radius: 50,
-	value: 15,
-	maxValue: 35,
-	width: 5,
-	text: 0,
-	colors: ['#36a3f7', '#00FF00'],
-	duration: 400,
-	wrpClass: 'circles-wrp',
-	textClass: 'circles-text',
-	styleWrapper: true,
-	styleText: true,
-	// onComplete: function (circle) {
-	// 	circleNotUpdating = circle
-	// }
-})
-var circleRunning = Circles.create({
-	id: 'Running',
-	radius: 50,
-	value: 17,
-	maxValue: 35,
-	width: 5,
-	text: 0,//function (value) { return value + '%'; },
-	colors: ['#36a3f7', '#00FF00'],
-	duration: 400,
-	wrpClass: 'circles-wrp',
-	textClass: 'circles-text',
-	styleWrapper: true,
-	styleText: true
-})
-var circleNotRunning = Circles.create({
-	id: 'Not_Running',
-	radius: 50,
-	value: 2,
-	maxValue: 35,
-	width: 5,
-	text: 0,//function (value) { return value + '%'; },
-	colors: ['#36a3f7', '#00FF00'],
-	duration: 400,
-	wrpClass: 'circles-wrp',
-	textClass: 'circles-text',
-	styleWrapper: true,
-	styleText: true
-})
 //Notify
 $.notify({
 	icon: 'flaticon-alarm-1',
@@ -368,12 +371,12 @@ function weeklyCompletionChart(weeklyData) {
 	var weeklyCompletions = new Chart(weeklyCompletions, {
 		type: 'bar',
 		data: {
-			labels: ["S", "M", "T", "W", "T", "F", "S", "S", "M", "T", "W", "T", "F", "S"],
+			labels: ["M", "T", "W", "T", "F", "S","S", "M", "T", "W", "T", "F", "S", "S"],
 			datasets: [{
 				label: "Total Completions",
 				backgroundColor: '#ff9e27',
 				borderColor: 'rgb(23, 125, 255)',
-				data: [weeklyData.LastWeek_Sunday, weeklyData.LastWeek_Monday, weeklyData.LastWeek_Tuesday, weeklyData.LastWeek_Wednesday, weeklyData.LastWeek_Thursday, weeklyData.LastWeek_Friday, weeklyData.LastWeek_Saturday, weeklyData.Sunday, weeklyData.Monday, weeklyData.Tuesday, weeklyData.Wednesday, weeklyData.Thursday, weeklyData.Friday, weeklyData.Saturday]
+				data: [weeklyData.LastWeek_Monday, weeklyData.LastWeek_Tuesday, weeklyData.LastWeek_Wednesday, weeklyData.LastWeek_Thursday, weeklyData.LastWeek_Friday, weeklyData.LastWeek_Saturday, weeklyData.LastWeek_Sunday, weeklyData.Monday, weeklyData.Tuesday, weeklyData.Wednesday, weeklyData.Thursday, weeklyData.Friday, weeklyData.Saturday, weeklyData.Sunday]
 			}],
 		},
 		options: {

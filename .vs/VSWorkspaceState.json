@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\apps",
-    "\\apps\\home"
+    "\\apps\\static",
+    "\\apps\\static\\assets",
+    "\\apps\\templates",
+    "\\apps\\templates\\home"
   ],
-  "SelectedNode": "\\apps\\config.py",
   "PreviewInSolutionExplorer": false
 }
