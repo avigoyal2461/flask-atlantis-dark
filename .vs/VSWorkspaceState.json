@@ -2,10 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\apps",
+    "\\apps\\authentication",
+    "\\apps\\home",
     "\\apps\\static",
     "\\apps\\static\\assets",
+    "\\apps\\static\\assets\\js",
     "\\apps\\templates",
     "\\apps\\templates\\home"
   ],
+  "SelectedNode": "\\apps\\authentication\\__init__.py",
   "PreviewInSolutionExplorer": false
 }

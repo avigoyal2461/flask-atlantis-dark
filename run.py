@@ -4,13 +4,13 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 import os
-from   flask_migrate import Migrate
+# from   flask_migrate import Migrate
 from   flask_minify  import Minify
 from   sys import exit
 from flask_session import Session
 
 from apps.config import config_dict
-from apps import create_app, db
+from apps import create_app#, db
 
 # WARNING: Don't run with debug turned on in production!
 DEBUG = (os.getenv('DEBUG', 'False') == 'True')
@@ -21,7 +21,8 @@ get_config_mode = 'Debug' if DEBUG else 'Production'
 try:
 
     # Load the configuration using the default values
-    app_config = config_dict[get_config_mode.capitalize()]
+    # app_config = config_dict[get_config_mode.capitalize()]
+    app_config = config_dict['Production']
 
 except KeyError:
     exit('Error: Invalid <config_mode>. Expected values [Debug, Production] ')
@@ -40,6 +41,6 @@ if DEBUG:
     app.logger.info('ASSETS_ROOT      = ' + app_config.ASSETS_ROOT )
 
 if __name__ == "__main__":
-    app.secret_key = 'RPASuperSecretKEY'
+    # app.secret_key = 'RPASuperSecretKEY'
 
     app.run("0.0.0.0", 6060)

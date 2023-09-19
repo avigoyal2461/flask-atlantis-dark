@@ -23,7 +23,7 @@ from flask_session import Session  # https://pythonhosted.org/Flask-Session
 import msal
 from apps.authentication import app_config
 
-current_user = None
+# current_user = None
 @blueprint.route('/')
 def route_default():
     return redirect(url_for('authentication_blueprint.login'))
@@ -120,6 +120,7 @@ def login():
     # Technically we could use empty list [] as scopes to do just sign in,
     # here we choose to also collect end user consent upfront
     session["flow"] = _build_auth_code_flow(scopes=app_config.SCOPE)
+    print(session['flow'])
     return render_template("accounts/login.html", auth_url=session["flow"]["auth_uri"], version=msal.__version__)
 
 @blueprint.route(app_config.REDIRECT_PATH)  # Its absolute URL must match your app's redirect_uri set in AAD

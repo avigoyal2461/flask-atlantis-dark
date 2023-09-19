@@ -14,7 +14,7 @@ var uncompleted_month_data;
 var total_running;
 var total_not_running;
 
-const rpa_url = 'http://40.114.108.25:6050/processes'
+const rpa_url = 'https://trinity-rpa-dev.trinity-solar.com/processes'
 /*
 document.addEventListener('DOMContentLoaded', function () {
 	var hide_button = document.querySelector('.btn.btn-icon.btn-link.btn-primary.btn-xs');
@@ -129,8 +129,6 @@ $(document).ready(function () {
 	// });
 });
 function create_circles(not_updating_text, running_text, not_running_text, max) {
-	console.log(max)
-
 	var circleNotUpdating = Circles.create({
 		id: 'Not_Updating',
 		radius: 50,
@@ -358,6 +356,7 @@ var statisticsChart = new Chart(ctx, {
 });
 function weeklyCompletionChart(weeklyData) {
 	weeklyData = weeklyData[0];
+	savings(weeklyData);
 	var weeklyCompletions = document.getElementById('weeklyCompletions').getContext('2d');
 	var total_element = document.getElementById('totalWeeklyCompletion');
 	var total_last_week = document.getElementById('totalLastWeekCompletions');
@@ -416,68 +415,91 @@ for (var i = 0; i < legendItems.length; i += 1) {
 	legendItems[i].addEventListener("click", legendClickCallback, false);
 }
 
-var dailyCompletions = document.getElementById('dailyCompletions').getContext('2d');
+function savings(data){
+	var dailyCompletions = document.getElementById('dailyCompletions').getContext('2d');
+	const cardBody = document.querySelector('.card-body.pb-0');
 
-var mydailyCompletions = new Chart(dailyCompletions, {
-	type: 'line',
-	data: {
-		labels:["Monday",
-		"Tuesday",
-		"Wednesday",
-		"Thursday",
-		"Friday",
-		"Saturday",
-		"Sunday"],
-
-		datasets:[ {
-			label: "Sales Analytics", 
-			fill: !0, 
-			backgroundColor: "rgba(255,255,255,0.2)",
-			borderColor: "#fff", 
-			borderCapStyle: "butt", 
-			borderDash: [], 
-			borderDashOffset: 0, 
-			pointBorderColor: "#fff", 
-			pointBackgroundColor: "#fff", 
-			pointBorderWidth: 1, 
-			pointHoverRadius: 5, 
-			pointHoverBackgroundColor: "#fff", 
-			pointHoverBorderColor: "#fff", 
-			pointHoverBorderWidth: 1, 
-			pointRadius: 1, 
-			pointHitRadius: 5, 
-			data: [65, 59, 80, 81, 56, 55, 40]
-		}]
-	},
-	options : {
-		maintainAspectRatio:!1, legend: {
-			display: !1
-		}
-		, animation: {
-			easing: "easeInOutBack"
-		}
-		, scales: {
-			yAxes:[ {
-				display:!1, ticks: {
-					fontColor: "rgba(0,0,0,0.5)", fontStyle: "bold", beginAtZero: !0, maxTicksLimit: 10, padding: 0
-				}
-				, gridLines: {
-					drawTicks: !1, display: !1
-				}
-			}
-			], xAxes:[ {
-				display:!1, gridLines: {
-					zeroLineColor: "transparent"
-				}
-				, ticks: {
-					padding: -20, fontColor: "rgba(255,255,255,0.2)", fontStyle: "bold"
-				}
-			}
-			]
-		}
+	const h1Element = cardBody.querySelector('h1');
+	let total_savings = 0
+	let savings_data = [data.LastWeek_Monday_Savings, data.LastWeek_Tuesday_Savings, data.LastWeek_Wednesday_Savings, data.LastWeek_Thursday_Savings, 
+					data.LastWeek_Friday_Savings, data.LastWeek_Saturday_Savings, data.LastWeek_Sunday_Savings, data.Monday_Savings, data.Tuesday_Savings, 
+					data.Wednesday_Savings, data.Thursday_Savings, data.Friday_Savings, data.Saturday_Savings, data.Sunday_Savings]
+	for (let i = 0; i<savings_data.length;i++){
+		total_savings += savings_data[i]
 	}
-});
+	total_savings = total_savings * 2
+	total_savings = total_savings * 40
+	
+	h1Element.innerHTML = '$' + total_savings;
+	var mydailyCompletions = new Chart(dailyCompletions, {
+		type: 'line',
+		data: {
+			labels:["Monday",
+			"Tuesday",
+			"Wednesday",
+			"Thursday",
+			"Friday",
+			"Saturday",
+			"Sunday","Monday",
+			"Tuesday",
+			"Wednesday",
+			"Thursday",
+			"Friday",
+			"Saturday",
+			"Sunday"],
 
+			datasets:[ {
+				label: "Hours Saved", 
+				fill: !0, 
+				backgroundColor: "rgba(255,255,255,0.2)",
+				borderColor: "#fff", 
+				borderCapStyle: "butt", 
+				borderDash: [], 
+				borderDashOffset: 0, 
+				pointBorderColor: "#fff", 
+				pointBackgroundColor: "#fff", 
+				pointBorderWidth: 1, 
+				pointHoverRadius: 5, 
+				pointHoverBackgroundColor: "#fff", 
+				pointHoverBorderColor: "#fff", 
+				pointHoverBorderWidth: 1, 
+				pointRadius: 1, 
+				pointHitRadius: 5,
+				data: [data.LastWeek_Monday_Savings, data.LastWeek_Tuesday_Savings, data.LastWeek_Wednesday_Savings, data.LastWeek_Thursday_Savings, 
+					data.LastWeek_Friday_Savings, data.LastWeek_Saturday_Savings, data.LastWeek_Sunday_Savings, data.Monday_Savings, data.Tuesday_Savings, 
+					data.Wednesday_Savings, data.Thursday_Savings, data.Friday_Savings, data.Saturday_Savings, data.Sunday_Savings]
+				//data: [65, 59, 80, 81, 56, 55, 40, 1, 2, 3, 4, 5, 6, 7]
+			}]
+		},
+		options : {
+			maintainAspectRatio:!1, legend: {
+				display: !1
+			}
+			, animation: {
+				easing: "easeInOutBack"
+			}
+			, scales: {
+				yAxes:[ {
+					display:!1, ticks: {
+						fontColor: "rgba(0,0,0,0.5)", fontStyle: "bold", beginAtZero: !0, maxTicksLimit: 10, padding: 0
+					}
+					, gridLines: {
+						drawTicks: !1, display: !1
+					}
+				}
+				], xAxes:[ {
+					display:!1, gridLines: {
+						zeroLineColor: "transparent"
+					}
+					, ticks: {
+						padding: -20, fontColor: "rgba(255,255,255,0.2)", fontStyle: "bold"
+					}
+				}
+				]
+			}
+		}
+	});
+}
 $("#activeUsersChart").sparkline([112,109,120,107,110,85,87,90,102,109,120,99,110,85,87,94], {
 	type: 'bar',
 	height: '100',
